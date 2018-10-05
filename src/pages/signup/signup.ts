@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 //Meus imports utilizados para validar
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+//Importo aquele serviço que criei
+import { UserService } from '../../providers/user/user.service'
 
 @IonicPage()
 @Component({
@@ -17,8 +19,10 @@ export class SignupPage {
     //Precisamos injectar no construtor o cara que será responsavel por fazer essa validacao
     public formBuilder: FormBuilder,
     public navCtrl: NavController, 
-    public navParams: NavParams) 
-  {
+    //Para usar meu serviço o declaro aqui no constructor
+    public UserService: UserService,
+    public navParams: NavParams
+    ){
     // No Construtor  
 
     //Declaro meu pattern escopo
@@ -37,8 +41,14 @@ export class SignupPage {
 
   }
 
-  onSubmit(): void{
-    //Agora adicionamos nossa validacao
-    console.log("Cadastrado");
+  onSubmit(): void{   
+    this.UserService.save(this.signupForm.value)
+    //Como 
+    .then(() => {
+      console.log("Gravado");
+    })
+    .catch((e) => {
+      console.log("Error");
+    });
   }
 }
